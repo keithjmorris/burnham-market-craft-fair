@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Burnham Market Craft Fair — Stall Registration</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f4f0;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .page-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 0.25rem;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      border: 0.5px solid #ddd;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .field {
+      margin-bottom: 1rem;
+    }
+
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #444;
+      margin-bottom: 0.35rem;
+    }
+
+    label .optional {
+      font-weight: 400;
+      color: #999;
+      font-size: 0.8rem;
+      margin-left: 4px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border: 0.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: #1a1a1a;
+      background: #fff;
+      transition: border-color 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #6b5fa6;
+      box-shadow: 0 0 0 3px rgba(107, 95, 166, 0.12);
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      padding-right: 2rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .stall-number-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stall-number-wrap input {
+      width: 100px;
+    }
+
+    .stall-hint {
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .photo-area {
+      border: 1.5px dashed #ccc;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      position: relative;
+    }
+
+    .photo-area:hover {
+      border-color: #6b5fa6;
+      background: #f9f8ff;
+    }
+
+    .photo-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .photo-area .photo-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #bbb;
+    }
+
+    .photo-area p {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    .photo-area p strong {
+      color: #6b5fa6;
+    }
+
+    .photo-preview {
+      display: none;
+      margin-top: 0.75rem;
+      text-align: center;
+    }
+
+    .photo-preview img {
+      max-width: 100%;
+      max-height: 180px;
+      border-radius: 8px;
+      border: 0.5px solid #ddd;
+    }
+
+    .photo-preview button {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: #c0392b;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .consent-wrap {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .consent-wrap input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      accent-color: #6b5fa6;
+      cursor: pointer;
+    }
+
+    .consent-wrap label {
+      font-size: 0.85rem;
+      color: #555;
+      margin-bottom: 0;
+      line-height: 1.5;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.85rem;
+      background: #6b5fa6;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .submit-btn:hover { background: #5a4f8c; }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { background: #bbb; cursor: not-allowed; }
+
+    .status-msg {
+      display: none;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .status-msg.success {
+      display: block;
+      background: #eaf3de;
+      color: #3b6d11;
+      border: 0.5px solid #c0dd97;
+    }
+
+    .status-msg.error {
+      display: block;
+      background: #fcebeb;
+      color: #a32d2d;
+      border: 0.5px solid #f7c1c1;
+    }
+
+    .field-error {
+      font-size: 0.78rem;
+      color: #c0392b;
+      margin-top: 0.3rem;
+      display: none;
+    }
+
+    input.invalid, select.invalid, textarea.invalid {
+      border-color: #e74c3c;
+    }
+
+    .fair-info {
+      background: #f0eefc;
+      border: 0.5px solid #c9c3f0;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      font-size: 0.85rem;
+      color: #4a4080;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .fair-info strong { font-weight: 600; }
+
+    @media (max-width: 480px) {
+      .card { padding: 1.25rem; }
+      header h1 { font-size: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <header>
+    <h1>The Burnham Market Craft Fair</h1>
+    <p>Stall registration form</p>
+  </header>
+
+  <div class="fair-info">
+    <strong>Sunday, [date TBC]</strong> &nbsp;·&nbsp; 9am – 5pm &nbsp;·&nbsp; Burnham Market<br>
+    Please complete this form so your stall can be listed in the official fair guide app. All fields marked as required must be completed.
+  </div>
+
+  <div id="status" class="status-msg"></div>
+
+  <form id="stallForm" novalidate>
+
+    <!-- Stall details -->
+    <div class="card">
+      <p class="card-title">Stall details</p>
+
+      <div class="field">
+        <label for="stallNumber">Stall number <span style="color:#c0392b">*</span></label>
+        <div class="stall-number-wrap">
+          <input type="number" id="stallNumber" name="stallNumber" min="1" max="999" placeholder="e.g. 12" required />
+          <span class="stall-hint">See your stall allocation letter</span>
+        </div>
+        <p class="field-error" id="stallNumber-err">Please enter your stall number.</p>
+      </div>
+
+      <div class="field">
+        <label for="stallName">Stall / business name <span style="color:#c0392b">*</span></label>
+        <input type="text" id="stallName" name="stallName" placeholder="e.g. The Pottery Barn" required />
+        <p class="field-error" id="stallName-err">Please enter your stall name.</p>
+      </div>
+
+      <div class="field">
+        <label for="category">Category <span style="color:#c0392b">*</span></label>
+        <select id="category" name="category" required>
+          <option value="">Select a category…</option>
+          <option>Art &amp; Prints</option>
+          <option>Candles &amp; Soaps</option>
+          <option>Cards &amp; Stationery</option>
+          <option>Ceramics &amp; Pottery</option>
+          <option>Clothing &amp; Textiles</option>
+          <option>Food &amp; Drink</option>
+          <option>Jewellery</option>
+          <option>Leather Goods</option>
+          <option>Plants &amp; Flowers</option>
+          <option>Toys &amp; Games</option>
+          <option>Woodwork</option>
+          <option>Other</option>
+        </select>
+        <p class="field-error" id="category-err">Please select a category.</p>
+      </div>
+
+      <div class="field">
+        <label for="description">Description <span style="color:#c0392b">*</span></label>
+        <textarea id="description" name="description" placeholder="A short description of what you sell (2–3 sentences)" required></textarea>
+        <p class="field-error" id="description-err">Please add a short description.</p>
+      </div>
+    </div>
+
+    <!-- Contact details -->
+    <div class="card">
+      <p class="card-title">Your contact details <span style="font-size:0.75rem; color:#aaa; font-weight:400; text-transform:none; letter-spacing:0">(not shown publicly)</span></p>
+
+      <div class="field">
+        <label for="contactName">Your name <span style="color:#c0392b">*</span></label>
+        <input type="text" id="contactName" name="contactName" placeholder="Full name" required />
+        <p class="field-error" id="contactName-err">Please enter your name.</p>
+      </div>
+
+      <div class="field">
+        <label for="contactEmail">Email address <span style="color:#c0392b">*</span></label>
+        <input type="email" id="contactEmail" name="contactEmail" placeholder="you@example.com" required />
+        <p class="field-error" id="contactEmail-err">Please enter a valid email address.</p>
+      </div>
+    </div>
+
+    <!-- Public contact -->
+    <div class="card">
+      <p class="card-title">Public contact <span style="font-size:0.75rem; color:#aaa; font-weight:400; text-transform:none; letter-spacing:0">(shown in the app)</span></p>
+
+      <div class="field">
+        <label for="phone">Phone number <span class="optional">(optional)</span></label>
+        <input type="tel" id="phone" name="phone" placeholder="e.g. 01234 567890" />
+      </div>
+
+      <div class="field">
+        <label for="website">Website or social media link <span class="optional">(optional)</span></label>
+        <input type="url" id="website" name="website" placeholder="https://…" />
+      </div>
+    </div>
+
+    <!-- Photo -->
+    <div class="card">
+      <p class="card-title">Photo <span style="font-size:0.75rem; color:#aaa; font-weight:400; text-transform:none; letter-spacing:0">(optional)</span></p>
+
+      <div class="field">
+        <label>Upload an image of your stall or products</label>
+        <div class="photo-area" id="photoArea">
+          <input type="file" id="photoFile" name="photoFile" accept="image/jpeg,image/png,image/webp" />
+          <div class="photo-icon">📷</div>
+          <p><strong>Choose a photo</strong> or drag it here</p>
+          <p style="margin-top:4px; font-size:0.75rem;">JPG, PNG or WebP · max 5MB</p>
+        </div>
+        <div class="photo-preview" id="photoPreview">
+          <img id="previewImg" src="" alt="Preview" />
+          <br>
+          <button type="button" id="removePhoto">Remove photo</button>
+        </div>
+        <p class="field-error" id="photo-err">File too large — please choose an image under 5MB.</p>
+      </div>
+    </div>
+
+    <!-- Consent -->
+    <div class="card">
+      <p class="card-title">Permission</p>
+      <div class="consent-wrap">
+        <input type="checkbox" id="consent" name="consent" required />
+        <label for="consent">
+          I agree for my stall details (name, description, category, phone, website and photo) to appear in the Burnham Market Craft Fair app. I understand my personal contact details (name and email) will not be shown publicly and will only be used by the app organiser if they need to contact me about my listing.
+        </label>
+      </div>
+      <p class="field-error" id="consent-err">You must agree to this before submitting.</p>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">Submit my stall details</button>
+
+    <p style="font-size:0.75rem; color:#aaa; text-align:center; margin-top:1rem; margin-bottom:2rem;">
+      Your data is stored securely and used only for the Burnham Market Craft Fair app.
+    </p>
+
+  </form>
+</div>
+
+<!-- Firebase v9 compat (CDN) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
+
+<script>
+  // ─── FIREBASE CONFIG ───────────────────────────────────────────────
+  // Replace these values with your own from the Firebase console
+  // (Project settings → Your apps → SDK setup and configuration)
+  const firebaseConfig = {
+  apiKey: "AIzaSyAmMoJa-5U6Kzkj3ClL8jYB7Y3pL8ysC04",
+  authDomain: "burnhammarketcraftfair.firebaseapp.com",
+  databaseURL: "https://burnhammarketcraftfair-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "burnhammarketcraftfair",
+  storageBucket: "burnhammarketcraftfair.firebasestorage.app",
+  messagingSenderId: "388230915965",
+  appId: "1:388230915965:web:93c83d174322c2aab28e14"
+};
+
+
+  firebase.initializeApp(firebaseConfig);
+  const db      = firebase.database();
+  const storage = firebase.storage();
+  // ────────────────────────────────────────────────────────────────────
+
+  // Photo preview
+  const photoFile    = document.getElementById('photoFile');
+  const photoPreview = document.getElementById('photoPreview');
+  const previewImg   = document.getElementById('previewImg');
+  const photoArea    = document.getElementById('photoArea');
+  const removePhoto  = document.getElementById('removePhoto');
+  const photoErr     = document.getElementById('photo-err');
+
+  photoFile.addEventListener('change', () => {
+    const file = photoFile.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      photoErr.style.display = 'block';
+      photoFile.value = '';
+      return;
+    }
+    photoErr.style.display = 'none';
+    const reader = new FileReader();
+    reader.onload = e => {
+      previewImg.src = e.target.result;
+      photoArea.style.display = 'none';
+      photoPreview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  removePhoto.addEventListener('click', () => {
+    photoFile.value = '';
+    previewImg.src = '';
+    photoArea.style.display = 'block';
+    photoPreview.style.display = 'none';
+  });
+
+  // Validation helpers
+  function showErr(id, msg) {
+    const el = document.getElementById(id + '-err');
+    const input = document.getElementById(id);
+    if (el) { el.style.display = 'block'; if (msg) el.textContent = msg; }
+    if (input) input.classList.add('invalid');
+  }
+
+  function clearErr(id) {
+    const el = document.getElementById(id + '-err');
+    const input = document.getElementById(id);
+    if (el) el.style.display = 'none';
+    if (input) input.classList.remove('invalid');
+  }
+
+  ['stallNumber','stallName','category','description','contactName','contactEmail','consent'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => clearErr(id));
+    if (el) el.addEventListener('change', () => clearErr(id));
+  });
+
+  function validate() {
+    let ok = true;
+
+    const stallNumber = document.getElementById('stallNumber').value.trim();
+    if (!stallNumber || isNaN(stallNumber) || parseInt(stallNumber) < 1) {
+      showErr('stallNumber'); ok = false;
+    } else clearErr('stallNumber');
+
+    const stallName = document.getElementById('stallName').value.trim();
+    if (!stallName) { showErr('stallName'); ok = false; } else clearErr('stallName');
+
+    const category = document.getElementById('category').value;
+    if (!category) { showErr('category'); ok = false; } else clearErr('category');
+
+    const description = document.getElementById('description').value.trim();
+    if (!description) { showErr('description'); ok = false; } else clearErr('description');
+
+    const contactName = document.getElementById('contactName').value.trim();
+    if (!contactName) { showErr('contactName'); ok = false; } else clearErr('contactName');
+
+    const contactEmail = document.getElementById('contactEmail').value.trim();
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!contactEmail || !emailRe.test(contactEmail)) {
+      showErr('contactEmail'); ok = false;
+    } else clearErr('contactEmail');
+
+    const consent = document.getElementById('consent').checked;
+    if (!consent) { showErr('consent'); ok = false; } else clearErr('consent');
+
+    return ok;
+  }
+
+  // Form submission
+  document.getElementById('stallForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    const btn    = document.getElementById('submitBtn');
+    const status = document.getElementById('status');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+    status.className = 'status-msg';
+    status.style.display = 'none';
+
+    try {
+      let photoURL = '';
+
+      // Upload photo if provided
+      const file = photoFile.files[0];
+      if (file) {
+        const stallNum = document.getElementById('stallNumber').value.trim();
+        const ext      = file.name.split('.').pop();
+        const ref      = storage.ref(`craft-fair/stall-${stallNum}-${Date.now()}.${ext}`);
+        await ref.put(file);
+        photoURL = await ref.getDownloadURL();
+      }
+
+      const data = {
+        stallNumber:  parseInt(document.getElementById('stallNumber').value.trim()),
+        name:         document.getElementById('stallName').value.trim(),
+        category:     document.getElementById('category').value,
+        description:  document.getElementById('description').value.trim(),
+        contactName:  document.getElementById('contactName').value.trim(),
+        contactEmail: document.getElementById('contactEmail').value.trim(),
+        phone:        document.getElementById('phone').value.trim(),
+        website:      document.getElementById('website').value.trim(),
+        image:        photoURL,
+        submittedAt:  new Date().toISOString(),
+        consentGiven: true
+      };
+
+      await db.ref('craft-fair/stalls').push(data);
+
+      status.className = 'status-msg success';
+      status.textContent = '✓ Thank you! Your stall details have been submitted successfully.';
+      status.style.display = 'block';
+      status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('stallForm').style.display = 'none';
+
+    } catch (err) {
+      console.error(err);
+      status.className = 'status-msg error';
+      status.textContent = 'Something went wrong — please try again or contact the organiser.';
+      status.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Submit my stall details';
+    }
+  });
+</script>
+</body>
+</html>
