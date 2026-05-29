@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Craft Fair Admin</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f4f0; color: #1a1a1a; min-height: 100vh; }
+
+    /* Login */
+    .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; }
+    .login-card { background: #fff; border-radius: 12px; border: 0.5px solid #ddd; padding: 2rem; width: 100%; max-width: 380px; }
+    .login-card h1 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .login-card p { font-size: 0.85rem; color: #888; margin-bottom: 1.5rem; }
+    .login-field { margin-bottom: 1rem; }
+    .login-field label { display: block; font-size: 0.85rem; font-weight: 500; color: #444; margin-bottom: 0.35rem; }
+    .login-field input { width: 100%; padding: 0.6rem 0.75rem; border: 0.5px solid #ccc; border-radius: 8px; font-size: 0.95rem; font-family: inherit; }
+    .login-field input:focus { outline: none; border-color: #6b5fa6; box-shadow: 0 0 0 3px rgba(107,95,166,0.12); }
+    .login-btn { width: 100%; padding: 0.75rem; background: #6b5fa6; color: #fff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 500; font-family: inherit; cursor: pointer; }
+    .login-btn:hover { background: #5a4f8c; }
+    .login-btn:disabled { background: #bbb; cursor: not-allowed; }
+    .login-error { font-size: 0.82rem; color: #c0392b; margin-top: 0.75rem; display: none; text-align: center; }
+
+    /* Admin layout */
+    .admin-wrap { display: none; }
+    .topbar { background: #fff; border-bottom: 0.5px solid #ddd; padding: 0.85rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .topbar h1 { font-size: 1rem; font-weight: 600; }
+    .topbar-right { display: flex; align-items: center; gap: 1rem; }
+    .topbar-right span { font-size: 0.82rem; color: #888; }
+    .signout-btn { font-size: 0.82rem; color: #6b5fa6; background: none; border: none; cursor: pointer; text-decoration: underline; }
+    .export-btn { padding: 0.5rem 1rem; background: #6b5fa6; color: #fff; border: none; border-radius: 8px; font-size: 0.82rem; font-weight: 500; font-family: inherit; cursor: pointer; }
+    .export-btn:hover { background: #5a4f8c; }
+
+    .content { padding: 1.5rem; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+    .stat-card { background: #fff; border-radius: 8px; border: 0.5px solid #ddd; padding: 1rem; }
+    .stat-card .stat-label { font-size: 0.75rem; color: #888; margin-bottom: 0.35rem; }
+    .stat-card .stat-value { font-size: 1.5rem; font-weight: 500; }
+
+    .table-wrap { background: #fff; border-radius: 12px; border: 0.5px solid #ddd; overflow: hidden; }
+    .table-header { padding: 1rem 1.25rem; border-bottom: 0.5px solid #eee; display: flex; align-items: center; justify-content: space-between; }
+    .table-header h2 { font-size: 0.9rem; font-weight: 600; }
+    .filter-input { padding: 0.4rem 0.75rem; border: 0.5px solid #ccc; border-radius: 6px; font-size: 0.85rem; font-family: inherit; width: 200px; }
+    .filter-input:focus { outline: none; border-color: #6b5fa6; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+    th { text-align: left; padding: 0.6rem 1rem; background: #f9f9f9; border-bottom: 0.5px solid #eee; font-weight: 500; color: #666; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    td { padding: 0.7rem 1rem; border-bottom: 0.5px solid #f0f0f0; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafaf8; }
+    .stall-num { font-weight: 600; color: #6b5fa6; }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; background: #f0eefc; color: #4a4080; }
+    .has-photo { color: #3b6d11; font-size: 0.75rem; }
+    .no-photo { color: #bbb; font-size: 0.75rem; }
+    .action-btn { padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.78rem; font-family: inherit; cursor: pointer; border: 0.5px solid; margin-right: 4px; }
+    .edit-btn { background: #f0eefc; color: #4a4080; border-color: #c9c3f0; }
+    .edit-btn:hover { background: #e4e0f8; }
+    .delete-btn { background: #fcebeb; color: #a32d2d; border-color: #f7c1c1; }
+    .delete-btn:hover { background: #f7d5d5; }
+    .empty-state { text-align: center; padding: 3rem; color: #aaa; font-size: 0.9rem; }
+
+    /* Edit modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: #fff; border-radius: 12px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; }
+    .modal-header { padding: 1.25rem 1.5rem; border-bottom: 0.5px solid #eee; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: #fff; z-index: 1; }
+    .modal-header h2 { font-size: 1rem; font-weight: 600; }
+    .modal-close { background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #888; line-height: 1; }
+    .modal-body { padding: 1.5rem; }
+    .modal-field { margin-bottom: 1rem; }
+    .modal-field label { display: block; font-size: 0.82rem; font-weight: 500; color: #444; margin-bottom: 0.3rem; }
+    .modal-field input, .modal-field select, .modal-field textarea { width: 100%; padding: 0.55rem 0.7rem; border: 0.5px solid #ccc; border-radius: 8px; font-size: 0.9rem; font-family: inherit; }
+    .modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus { outline: none; border-color: #6b5fa6; }
+    .modal-field textarea { min-height: 80px; resize: vertical; }
+    .modal-footer { padding: 1rem 1.5rem; border-top: 0.5px solid #eee; display: flex; gap: 0.75rem; justify-content: flex-end; }
+    .modal-save-btn { padding: 0.6rem 1.25rem; background: #6b5fa6; color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; font-family: inherit; cursor: pointer; }
+    .modal-save-btn:hover { background: #5a4f8c; }
+    .modal-save-btn:disabled { background: #bbb; cursor: not-allowed; }
+    .modal-cancel-btn { padding: 0.6rem 1.25rem; background: #fff; color: #444; border: 0.5px solid #ccc; border-radius: 8px; font-size: 0.9rem; font-family: inherit; cursor: pointer; }
+    .modal-cancel-btn:hover { background: #f5f4f0; }
+    .modal-status { font-size: 0.82rem; margin-bottom: 1rem; padding: 0.6rem 0.75rem; border-radius: 6px; display: none; }
+    .modal-status.success { display: block; background: #eaf3de; color: #3b6d11; }
+    .modal-status.error { display: block; background: #fcebeb; color: #a32d2d; }
+
+    .loading { text-align: center; padding: 3rem; color: #888; }
+  </style>
+</head>
+<body>
+
+<!-- Login screen -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <h1>Craft Fair Admin</h1>
+    <p>Sign in to manage stall registrations</p>
+    <div class="login-field">
+      <label for="loginEmail">Email</label>
+      <input type="email" id="loginEmail" placeholder="you@example.com" />
+    </div>
+    <div class="login-field">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" placeholder="••••••••" />
+    </div>
+    <button class="login-btn" id="loginBtn">Sign in</button>
+    <p class="login-error" id="loginError">Incorrect email or password.</p>
+  </div>
+</div>
+
+<!-- Admin dashboard -->
+<div class="admin-wrap" id="adminWrap">
+  <div class="topbar">
+    <h1>Burnham Market Craft Fair — Admin</h1>
+    <div class="topbar-right">
+      <span id="adminEmail"></span>
+      <button class="export-btn" id="exportBtn">Export JSON</button>
+      <button class="signout-btn" id="signoutBtn">Sign out</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="stats">
+      <div class="stat-card"><div class="stat-label">Total registrations</div><div class="stat-value" id="statTotal">—</div></div>
+      <div class="stat-card"><div class="stat-label">With photos</div><div class="stat-value" id="statPhotos">—</div></div>
+      <div class="stat-card"><div class="stat-label">With websites</div><div class="stat-value" id="statWebsites">—</div></div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-header">
+        <h2>Registrations</h2>
+        <input type="text" class="filter-input" id="filterInput" placeholder="Search stalls…" />
+      </div>
+      <div id="tableContainer"><div class="loading">Loading registrations…</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Edit stall</h2>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-status" id="modalStatus"></div>
+      <input type="hidden" id="editRecordId" />
+      <div class="modal-field"><label>Stall number</label><input type="number" id="editStallNumber" /></div>
+      <div class="modal-field"><label>Stall / business name</label><input type="text" id="editStallName" /></div>
+      <div class="modal-field">
+        <label>Category</label>
+        <select id="editCategory">
+          <option value="">Select…</option>
+          <option>Art &amp; Prints</option>
+          <option>Candles &amp; Soaps</option>
+          <option>Cards &amp; Stationery</option>
+          <option>Ceramics &amp; Pottery</option>
+          <option>Clothing &amp; Textiles</option>
+          <option>Food &amp; Drink</option>
+          <option>Jewellery</option>
+          <option>Leather Goods</option>
+          <option>Plants &amp; Flowers</option>
+          <option>Toys &amp; Games</option>
+          <option>Woodwork</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="modal-field"><label>Description</label><textarea id="editDescription"></textarea></div>
+      <div class="modal-field"><label>Contact name (private)</label><input type="text" id="editContactName" /></div>
+      <div class="modal-field"><label>Contact email (private)</label><input type="email" id="editContactEmail" /></div>
+      <div class="modal-field"><label>Phone (public)</label><input type="tel" id="editPhone" /></div>
+      <div class="modal-field"><label>Website (public)</label><input type="url" id="editWebsite" /></div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-cancel-btn" id="modalCancel">Cancel</button>
+      <button class="modal-save-btn" id="modalSave">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey:            "YOUR_API_KEY",
+    authDomain:        "burnhammarketcraftfair.firebaseapp.com",
+    databaseURL:       "https://burnhammarketcraftfair-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId:         "burnhammarketcraftfair",
+    storageBucket:     "burnhammarketcraftfair.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId:             "YOUR_APP_ID"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db   = firebase.database();
+  const auth = firebase.auth();
+
+  const BASE_URL = 'https://burnham-market-craft-fair-slei-6vaupnxju-keithjmorris-projects.vercel.app';
+
+  let allStalls = [];
+  let filterText = '';
+
+  // ── AUTH ────────────────────────────────────────────────────────────
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      document.getElementById('loginWrap').style.display  = 'none';
+      document.getElementById('adminWrap').style.display  = 'block';
+      document.getElementById('adminEmail').textContent   = user.email;
+      loadStalls();
+    } else {
+      document.getElementById('loginWrap').style.display  = 'flex';
+      document.getElementById('adminWrap').style.display  = 'none';
+    }
+  });
+
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const email    = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const btn      = document.getElementById('loginBtn');
+    const err      = document.getElementById('loginError');
+    err.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+    } catch (e) {
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Sign in';
+    }
+  });
+
+  document.getElementById('loginPassword').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('loginBtn').click(); });
+
+  document.getElementById('signoutBtn').addEventListener('click', () => auth.signOut());
+
+  // ── LOAD STALLS ─────────────────────────────────────────────────────
+  function loadStalls() {
+    db.ref('craft-fair/stalls').on('value', snap => {
+      const raw = snap.val();
+      allStalls = raw ? Object.entries(raw).map(([key, val]) => ({ _key: key, ...val })) : [];
+      allStalls.sort((a, b) => a.stallNumber - b.stallNumber);
+      updateStats();
+      renderTable();
+    });
+  }
+
+  function updateStats() {
+    document.getElementById('statTotal').textContent    = allStalls.length;
+    document.getElementById('statPhotos').textContent   = allStalls.filter(s => s.image).length;
+    document.getElementById('statWebsites').textContent = allStalls.filter(s => s.website).length;
+  }
+
+  function renderTable() {
+    const filtered = filterText
+      ? allStalls.filter(s => [s.stallNumber, s.name, s.category, s.description, s.contactName, s.contactEmail]
+          .join(' ').toLowerCase().includes(filterText.toLowerCase()))
+      : allStalls;
+
+    const container = document.getElementById('tableContainer');
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty-state">No registrations found.</div>';
+      return;
+    }
+
+    let html = `<div style="overflow-x:auto;"><table>
+      <thead><tr>
+        <th>#</th><th>Name</th><th>Category</th><th>Description</th>
+        <th>Contact</th><th>Phone</th><th>Website</th><th>Photo</th><th>Submitted</th><th>Actions</th>
+      </tr></thead><tbody>`;
+
+    filtered.forEach(s => {
+      const date = s.submittedAt ? new Date(s.submittedAt).toLocaleDateString('en-GB') : '—';
+      const updated = s.updatedAt ? ' (edited)' : '';
+      html += `<tr>
+        <td><span class="stall-num">${s.stallNumber || '—'}</span></td>
+        <td>${esc(s.name)}</td>
+        <td><span class="tag">${esc(s.category)}</span></td>
+        <td style="max-width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${esc(s.description)}</td>
+        <td>${esc(s.contactName)}<br><span style="color:#888;font-size:0.78rem;">${esc(s.contactEmail)}</span></td>
+        <td>${esc(s.phone) || '<span style="color:#bbb">—</span>'}</td>
+        <td>${s.website ? `<a href="${esc(s.website)}" target="_blank" style="color:#6b5fa6;font-size:0.78rem;">Link</a>` : '<span style="color:#bbb">—</span>'}</td>
+        <td>${s.image ? '<span class="has-photo">✓ Yes</span>' : '<span class="no-photo">No</span>'}</td>
+        <td style="white-space:nowrap;font-size:0.78rem;">${date}${updated}</td>
+        <td style="white-space:nowrap;">
+          <button class="action-btn edit-btn" onclick="openEdit('${s._key}')">Edit</button>
+          <button class="action-btn delete-btn" onclick="deleteStall('${s._key}', '${esc(s.name)}')">Delete</button>
+        </td>
+      </tr>`;
+    });
+
+    html += '</tbody></table></div>';
+    container.innerHTML = html;
+  }
+
+  document.getElementById('filterInput').addEventListener('input', e => {
+    filterText = e.target.value;
+    renderTable();
+  });
+
+  function esc(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── DELETE ───────────────────────────────────────────────────────────
+  async function deleteStall(key, name) {
+    if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    try {
+      await db.ref(`craft-fair/stalls/${key}`).remove();
+    } catch (err) {
+      alert('Delete failed — please try again.');
+    }
+  }
+
+  // ── EDIT MODAL ───────────────────────────────────────────────────────
+  function openEdit(key) {
+    const stall = allStalls.find(s => s._key === key);
+    if (!stall) return;
+    document.getElementById('editRecordId').value    = key;
+    document.getElementById('editStallNumber').value = stall.stallNumber || '';
+    document.getElementById('editStallName').value   = stall.name        || '';
+    document.getElementById('editCategory').value    = stall.category    || '';
+    document.getElementById('editDescription').value = stall.description || '';
+    document.getElementById('editContactName').value = stall.contactName || '';
+    document.getElementById('editContactEmail').value= stall.contactEmail|| '';
+    document.getElementById('editPhone').value       = stall.phone       || '';
+    document.getElementById('editWebsite').value     = stall.website     || '';
+    document.getElementById('modalStatus').className = 'modal-status';
+    document.getElementById('modalStatus').style.display = 'none';
+    document.getElementById('modalSave').disabled    = false;
+    document.getElementById('modalSave').textContent = 'Save changes';
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalCancel').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === document.getElementById('modalOverlay')) closeModal(); });
+
+  function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+  document.getElementById('modalSave').addEventListener('click', async () => {
+    const key = document.getElementById('editRecordId').value;
+    const btn = document.getElementById('modalSave');
+    const ms  = document.getElementById('modalStatus');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+    ms.className = 'modal-status';
+    ms.style.display = 'none';
+
+    try {
+      await db.ref(`craft-fair/stalls/${key}`).update({
+        stallNumber:  parseInt(document.getElementById('editStallNumber').value) || 0,
+        name:         document.getElementById('editStallName').value.trim(),
+        category:     document.getElementById('editCategory').value,
+        description:  document.getElementById('editDescription').value.trim(),
+        contactName:  document.getElementById('editContactName').value.trim(),
+        contactEmail: document.getElementById('editContactEmail').value.trim(),
+        phone:        document.getElementById('editPhone').value.trim(),
+        website:      document.getElementById('editWebsite').value.trim(),
+        updatedAt:    new Date().toISOString()
+      });
+      ms.className = 'modal-status success';
+      ms.textContent = '✓ Saved successfully.';
+      ms.style.display = 'block';
+      btn.textContent = 'Save changes';
+      btn.disabled = false;
+      setTimeout(closeModal, 1200);
+    } catch (err) {
+      ms.className = 'modal-status error';
+      ms.textContent = 'Save failed — please try again.';
+      ms.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Save changes';
+    }
+  });
+
+  // ── EXPORT ───────────────────────────────────────────────────────────
+  document.getElementById('exportBtn').addEventListener('click', () => {
+    const exported = allStalls.map(s => ({
+      id:          String(s.stallNumber),
+      category:    'craft-fair',
+      name:        s.name,
+      description: s.description,
+      tags:        [s.category],
+      phoneNumber: s.phone    || '',
+      postCode:    '',
+      latitude:    0,
+      longitude:   0,
+      openingHours: { monday:'', tuesday:'', wednesday:'', thursday:'', friday:'', saturday:'', sunday:'', special:'9am - 5pm' },
+      website:     s.website  || '',
+      image:       s.image    || '',
+      stallNumber: s.stallNumber
+    }));
+    exported.sort((a, b) => a.stallNumber - b.stallNumber);
+    const blob = new Blob([JSON.stringify(exported, null, 2)], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `stalls-export-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+</script>
+</body>
+</html>
