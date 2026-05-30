@@ -113,6 +113,7 @@
     <div class="topbar-right">
       <span id="adminEmail"></span>
       <button class="export-btn" id="exportBtn">Export JSON</button>
+<button class="export-btn" id="exportCsvBtn" style="margin-left:0.5rem; background:#4a8c5f;">Export CSV</button>
       <button class="signout-btn" id="signoutBtn">Sign out</button>
     </div>
   </div>
@@ -392,6 +393,36 @@
       image:       s.image    || '',
       stallNumber: s.stallNumber
     }));
+    document.getElementById('exportCsvBtn').addEventListener('click', () => {
+  const headers = [
+    'Stall Number', 'Name', 'Category', 'Description',
+    'Contact Name', 'Contact Email', 'Phone', 'Website',
+    'Image URL', 'Submitted At', 'Updated At'
+  ];
+
+  const rows = allStalls.map(s => [
+    s.stallNumber,
+    s.name,
+    s.category,
+    s.description,
+    s.contactName,
+    s.contactEmail,
+    s.phone    || '',
+    s.website  || '',
+    s.image    || '',
+    s.submittedAt  || '',
+    s.updatedAt    || ''
+  ].map(val => `"${String(val).replace(/"/g, '""')}"`).join(','));
+
+  const csv      = [headers.join(','), ...rows].join('\n');
+  const blob     = new Blob([csv], { type: 'text/csv' });
+  const url      = URL.createObjectURL(blob);
+  const a        = document.createElement('a');
+  a.href         = url;
+  a.download     = `stalls-export-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
     exported.sort((a, b) => a.stallNumber - b.stallNumber);
     const blob = new Blob([JSON.stringify(exported, null, 2)], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
