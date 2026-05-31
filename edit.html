@@ -119,8 +119,16 @@
         <input type="tel" id="phone" name="phone" />
       </div>
       <div class="field">
-        <label for="website">Website or social media link <span class="optional">(optional)</span></label>
+        <label for="website">Website <span class="optional">(optional)</span></label>
         <input type="url" id="website" name="website" placeholder="https://…" />
+      </div>
+      <div class="field">
+        <label for="instagram">Instagram handle <span class="optional">(optional)</span></label>
+        <input type="text" id="instagram" name="instagram" placeholder="e.g. @mystall or mystall" />
+      </div>
+      <div class="field">
+        <label for="facebook">Facebook page <span class="optional">(optional)</span></label>
+        <input type="text" id="facebook" name="facebook" placeholder="e.g. mystallpage" />
       </div>
     </div>
 
@@ -156,13 +164,13 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
 <script>
   const firebaseConfig = {
-    apiKey: "AIzaSyAmMoJa-5U6Kzkj3ClL8jYB7Y3pL8ysC04",
+    apiKey:            "YOUR_API_KEY",
     authDomain:        "burnhammarketcraftfair.firebaseapp.com",
     databaseURL:       "https://burnhammarketcraftfair-default-rtdb.europe-west1.firebasedatabase.app",
     projectId:         "burnhammarketcraftfair",
-    storageBucket: "burnhammarketcraftfair.firebasestorage.app",
-    messagingSenderId: "388230915965",
-  appId: "1:388230915965:web:93c83d174322c2aab28e14"
+    storageBucket:     "burnhammarketcraftfair.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId:             "YOUR_APP_ID"
   };
 
   firebase.initializeApp(firebaseConfig);
@@ -201,6 +209,8 @@
       document.getElementById('contactEmail').value = data.contactEmail|| '';
       document.getElementById('phone').value        = data.phone       || '';
       document.getElementById('website').value      = data.website     || '';
+      document.getElementById('instagram').value    = data.instagram   || '';
+      document.getElementById('facebook').value     = data.facebook    || '';
 
       if (data.image) {
         existingImageURL = data.image;
@@ -284,6 +294,8 @@
         contactEmail: document.getElementById('contactEmail').value.trim(),
         phone:        document.getElementById('phone').value.trim(),
         website:      document.getElementById('website').value.trim(),
+        instagram:    document.getElementById('instagram').value.trim().replace(/^@/, ''),
+        facebook:     document.getElementById('facebook').value.trim().replace(/^@/, ''),
         image:        photoURL,
         updatedAt:    new Date().toISOString()
       };

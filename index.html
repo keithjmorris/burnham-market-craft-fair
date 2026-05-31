@@ -141,8 +141,16 @@
         <input type="tel" id="phone" name="phone" placeholder="e.g. 01234 567890" />
       </div>
       <div class="field">
-        <label for="website">Website or social media link <span class="optional">(optional)</span></label>
+        <label for="website">Website <span class="optional">(optional)</span></label>
         <input type="url" id="website" name="website" placeholder="https://…" />
+      </div>
+      <div class="field">
+        <label for="instagram">Instagram handle <span class="optional">(optional)</span></label>
+        <input type="text" id="instagram" name="instagram" placeholder="e.g. @mystall or mystall" />
+      </div>
+      <div class="field">
+        <label for="facebook">Facebook page <span class="optional">(optional)</span></label>
+        <input type="text" id="facebook" name="facebook" placeholder="e.g. mystallpage" />
       </div>
     </div>
 
@@ -187,16 +195,16 @@
   const EMAILJS_SERVICE_ID  = 'service_nlqt0lg';
   const EMAILJS_TEMPLATE_ID = 'template_2g592dm';
   const EMAILJS_PUBLIC_KEY  = 'v_rrkJ2f7mNjDzB2_';
-  const BASE_URL = 'https://burnham-market-craft-fair-slei.vercel.app';
+  const BASE_URL            = 'https://burnham-market-craft-fair-slei.vercel.app';
 
   const firebaseConfig = {
     apiKey: "AIzaSyAmMoJa-5U6Kzkj3ClL8jYB7Y3pL8ysC04",
     authDomain:        "burnhammarketcraftfair.firebaseapp.com",
     databaseURL:       "https://burnhammarketcraftfair-default-rtdb.europe-west1.firebasedatabase.app",
     projectId:         "burnhammarketcraftfair",
-    storageBucket: "burnhammarketcraftfair.firebasestorage.app",
+    storageBucket:     "burnhammarketcraftfair.appspot.com",
      messagingSenderId: "388230915965",
-    appId: "1:388230915965:web:93c83d174322c2aab28e14"
+  appId: "1:388230915965:web:93c83d174322c2aab28e14"
   };
 
   firebase.initializeApp(firebaseConfig);
@@ -296,6 +304,8 @@
         contactEmail: document.getElementById('contactEmail').value.trim(),
         phone:        document.getElementById('phone').value.trim(),
         website:      document.getElementById('website').value.trim(),
+        instagram:    document.getElementById('instagram').value.trim().replace(/^@/, ''),
+        facebook:     document.getElementById('facebook').value.trim().replace(/^@/, ''),
         image:        photoURL,
         submittedAt:  new Date().toISOString(),
         consentGiven: true,

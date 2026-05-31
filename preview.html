@@ -3,391 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Burnham Market Craft Fair — Stall Preview</title>
+  <title>The Burnham Market Craft Fair — Stall Guide</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --green:       #2C4A3E;
-      --green-light: #3a5f51;
-      --green-pale:  #eef2f0;
-      --tag-bg:      #e0ebe6;
-      --tag-text:    #2C4A3E;
-      --border:      #e0e0e0;
-      --text:        #1a1a1a;
-      --muted:       #888;
-      --card-bg:     #ffffff;
+      --green: #2C4A3E; --green-light: #3a5f51; --green-pale: #eef2f0;
+      --tag-bg: #e0ebe6; --tag-text: #2C4A3E; --border: #e0e0e0;
+      --text: #1a1a1a; --muted: #888; --card-bg: #ffffff;
     }
-
-    body {
-      font-family: 'Source Sans 3', sans-serif;
-      background: #f5f5f3;
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    /* Header */
-    .header {
-      background: var(--green);
-      padding: 1rem 1.25rem 0.85rem;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .header h1 {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 0.01em;
-    }
-
-    .header p {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.65);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-top: 1px;
-    }
-
-    /* Info banner */
-    .fair-banner {
-      background: var(--green-light);
-      padding: 0.65rem 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.9);
-    }
-
+    body { font-family: 'Source Sans 3', sans-serif; background: #f5f5f3; color: var(--text); min-height: 100vh; }
+    .header { background: var(--green); padding: 1rem 1.25rem 0.85rem; position: sticky; top: 0; z-index: 10; }
+    .header h1 { font-family: 'Libre Baskerville', serif; font-size: 1.25rem; font-weight: 700; color: #fff; letter-spacing: 0.01em; }
+    .header p { font-size: 0.72rem; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1px; }
+    .fair-banner { background: var(--green-light); padding: 0.65rem 1.25rem; font-size: 0.82rem; color: rgba(255,255,255,0.9); }
     .fair-banner strong { font-weight: 600; }
-
-    /* Search / filter bar */
-    .filter-bar {
-      background: #fff;
-      border-bottom: 0.5px solid var(--border);
-      padding: 0.75rem 1rem;
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .search-input {
-      flex: 1;
-      padding: 0.5rem 0.75rem;
-      border: 0.5px solid #ccc;
-      border-radius: 20px;
-      font-size: 0.88rem;
-      font-family: inherit;
-      background: #f9f9f9;
-    }
-
-    .search-input:focus {
-      outline: none;
-      border-color: var(--green);
-      background: #fff;
-    }
-
-    .category-filter {
-      padding: 0.5rem 0.75rem;
-      border: 0.5px solid #ccc;
-      border-radius: 20px;
-      font-size: 0.82rem;
-      font-family: inherit;
-      background: #f9f9f9;
-      appearance: none;
-      -webkit-appearance: none;
-      padding-right: 1.5rem;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23888' d='M5 7L0 2h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 0.5rem center;
-    }
-
+    .filter-bar { background: #fff; border-bottom: 0.5px solid var(--border); padding: 0.75rem 1rem; display: flex; gap: 0.5rem; align-items: center; }
+    .search-input { flex: 1; padding: 0.5rem 0.75rem; border: 0.5px solid #ccc; border-radius: 20px; font-size: 0.88rem; font-family: inherit; background: #f9f9f9; }
+    .search-input:focus { outline: none; border-color: var(--green); background: #fff; }
+    .category-filter { padding: 0.5rem 0.75rem; border: 0.5px solid #ccc; border-radius: 20px; font-size: 0.82rem; font-family: inherit; background: #f9f9f9; appearance: none; -webkit-appearance: none; padding-right: 1.5rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23888' d='M5 7L0 2h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.5rem center; }
     .category-filter:focus { outline: none; border-color: var(--green); }
-
-    /* Stall count */
-    .stall-count {
-      font-size: 0.78rem;
-      color: var(--muted);
-      padding: 0.5rem 1rem 0.25rem;
-    }
-
-    /* Stall list */
-    .stall-list {
-      padding: 0.25rem 0 2rem;
-    }
-
-    /* Stall card */
-    .stall-card {
-      background: var(--card-bg);
-      border-bottom: 0.5px solid var(--border);
-      animation: fadeIn 0.3s ease both;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .stall-main {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-      padding: 0.9rem 1rem 0.75rem;
-    }
-
-    .stall-image {
-      width: 64px;
-      height: 64px;
-      border-radius: 6px;
-      object-fit: cover;
-      flex-shrink: 0;
-      background: var(--green-pale);
-    }
-
-    .stall-image-placeholder {
-      width: 64px;
-      height: 64px;
-      border-radius: 6px;
-      flex-shrink: 0;
-      background: var(--green-pale);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      color: var(--green);
-      opacity: 0.5;
-    }
-
+    .stall-count { font-size: 0.78rem; color: var(--muted); padding: 0.5rem 1rem 0.25rem; }
+    .stall-list { padding: 0.25rem 0 2rem; }
+    .stall-card { background: var(--card-bg); border-bottom: 0.5px solid var(--border); animation: fadeIn 0.3s ease both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .stall-main { display: flex; align-items: flex-start; gap: 0.85rem; padding: 0.9rem 1rem 0.75rem; }
+    .stall-image { width: 64px; height: 64px; border-radius: 6px; object-fit: cover; flex-shrink: 0; background: var(--green-pale); }
+    .stall-image-placeholder { width: 64px; height: 64px; border-radius: 6px; flex-shrink: 0; background: var(--green-pale); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--green); opacity: 0.5; }
     .stall-info { flex: 1; min-width: 0; }
-
-    .stall-name {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 0.2rem;
-      line-height: 1.3;
-    }
-
-    .stall-description {
-      font-size: 0.85rem;
-      color: #555;
-      line-height: 1.4;
-      margin-bottom: 0.4rem;
-    }
-
-    .stall-tag {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 3px;
-      font-size: 0.68rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      background: var(--tag-bg);
-      color: var(--tag-text);
-    }
-
-    .stall-number-badge {
-      font-size: 0.72rem;
-      color: var(--muted);
-      margin-top: 0.35rem;
-    }
-
-    /* Action buttons */
-    .stall-actions {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border-top: 0.5px solid var(--border);
-    }
-
-    .action-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      padding: 0.6rem 0.25rem;
-      background: none;
-      border: none;
-      border-right: 0.5px solid var(--border);
-      cursor: pointer;
-      text-decoration: none;
-      color: var(--text);
-      transition: background 0.12s;
-      font-family: inherit;
-    }
-
+    .stall-name { font-family: 'Libre Baskerville', serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; line-height: 1.3; }
+    .stall-description { font-size: 0.85rem; color: #555; line-height: 1.4; margin-bottom: 0.4rem; }
+    .stall-tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; background: var(--tag-bg); color: var(--tag-text); }
+    .stall-number-badge { font-size: 0.72rem; color: var(--muted); margin-top: 0.35rem; }
+    .stall-actions { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 0.5px solid var(--border); }
+    .action-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0.6rem 0.25rem; background: none; border: none; border-right: 0.5px solid var(--border); cursor: pointer; text-decoration: none; color: var(--text); transition: background 0.12s; font-family: inherit; }
     .action-btn:last-child { border-right: none; }
     .action-btn:hover { background: var(--green-pale); }
     .action-btn.disabled { opacity: 0.35; pointer-events: none; }
-
-    .action-icon {
-      width: 22px;
-      height: 22px;
-      stroke: var(--text);
-      fill: none;
-      stroke-width: 1.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .action-label {
-      font-size: 0.68rem;
-      color: var(--text);
-      letter-spacing: 0.02em;
-    }
-
-    /* Empty / loading states */
-    .state-msg {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
+    .action-icon { width: 20px; height: 20px; stroke: var(--text); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .action-icon.filled { fill: var(--text); stroke: none; }
+    .action-label { font-size: 0.63rem; color: var(--text); letter-spacing: 0.02em; }
+    .state-msg { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 0.9rem; }
     .state-msg .emoji { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
-
-    /* Register CTA */
-    .register-cta {
-      margin: 1rem;
-      background: var(--green);
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      text-decoration: none;
-    }
-
+    .register-cta { margin: 1rem; background: var(--green); border-radius: 10px; padding: 1rem 1.25rem; color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 1rem; text-decoration: none; }
     .register-cta p { font-size: 0.85rem; opacity: 0.9; margin-top: 2px; }
     .register-cta strong { font-size: 0.95rem; }
     .register-cta .cta-arrow { font-size: 1.25rem; flex-shrink: 0; }
+    .preview-notice { background: #fff8e6; border: 0.5px solid #f0d070; border-radius: 8px; margin: 0.75rem 1rem 0; padding: 0.65rem 0.85rem; font-size: 0.78rem; color: #7a5c00; line-height: 1.5; }
 
-    /* Modal overlay for hours/details */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      z-index: 100;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
+    /* Detail modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 100; align-items: flex-end; justify-content: center; }
     .modal-overlay.open { display: flex; }
+    .modal-sheet { background: #fff; border-radius: 16px 16px 0 0; width: 100%; max-width: 640px; padding: 1.25rem 1.25rem 2rem; animation: slideUp 0.25s ease; max-height: 90vh; overflow-y: auto; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal-handle { width: 36px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 1rem; }
+    .modal-title { font-family: 'Libre Baskerville', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .modal-category { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; background: var(--tag-bg); color: var(--tag-text); margin-bottom: 0.85rem; }
+    .modal-image { width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 0.85rem; }
+    .modal-desc { font-size: 0.9rem; color: #444; line-height: 1.6; margin-bottom: 1rem; }
+    .modal-detail { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: #555; margin-bottom: 0.5rem; }
+    .modal-detail svg { width: 16px; height: 16px; stroke: var(--green); fill: none; stroke-width: 1.5; flex-shrink: 0; }
+    .modal-detail a { color: var(--green); text-decoration: none; }
+    .modal-detail a:hover { text-decoration: underline; }
+    .modal-close-btn { width: 100%; margin-top: 1.25rem; padding: 0.75rem; background: var(--green); color: #fff; border: none; border-radius: 8px; font-size: 0.95rem; font-family: inherit; cursor: pointer; }
 
-    .modal-sheet {
-      background: #fff;
-      border-radius: 16px 16px 0 0;
-      width: 100%;
-      max-width: 640px;
-      padding: 1.25rem 1.25rem 2rem;
-      animation: slideUp 0.25s ease;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to   { transform: translateY(0); }
-    }
-
-    .modal-handle {
-      width: 36px;
-      height: 4px;
-      background: #ddd;
-      border-radius: 2px;
-      margin: 0 auto 1rem;
-    }
-
-    .modal-title {
-      font-family: 'Libre Baskerville', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-
-    .modal-category {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 3px;
-      font-size: 0.68rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      background: var(--tag-bg);
-      color: var(--tag-text);
-      margin-bottom: 0.85rem;
-    }
-
-    .modal-image {
-      width: 100%;
-      max-height: 200px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 0.85rem;
-    }
-
-    .modal-desc {
-      font-size: 0.9rem;
-      color: #444;
-      line-height: 1.6;
-      margin-bottom: 1rem;
-    }
-
-    .modal-detail {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.85rem;
-      color: #555;
-      margin-bottom: 0.5rem;
-    }
-
-    .modal-detail svg {
-      width: 16px;
-      height: 16px;
-      stroke: var(--green);
-      fill: none;
-      stroke-width: 1.5;
-      flex-shrink: 0;
-    }
-
-    .modal-close-btn {
-      width: 100%;
-      margin-top: 1.25rem;
-      padding: 0.75rem;
-      background: var(--green);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      cursor: pointer;
-    }
-
-    .preview-notice {
-      background: #fff8e6;
-      border: 0.5px solid #f0d070;
-      border-radius: 8px;
-      margin: 0.75rem 1rem 0;
-      padding: 0.65rem 0.85rem;
-      font-size: 0.78rem;
-      color: #7a5c00;
-      line-height: 1.5;
-    }
+    /* Map overlay */
+    .map-overlay { display: none; position: fixed; inset: 0; background: #000; z-index: 200; flex-direction: column; }
+    .map-overlay.open { display: flex; }
+    .map-topbar { background: var(--green); padding: 0.75rem 1rem; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .map-topbar h2 { font-size: 0.95rem; font-weight: 600; color: #fff; }
+    .map-topbar p { font-size: 0.78rem; color: rgba(255,255,255,0.75); }
+    .map-close { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; line-height: 1; padding: 0 0.25rem; }
+    .map-stall-banner { background: #f0a500; padding: 0.5rem 1rem; font-size: 0.85rem; font-weight: 600; color: #1a1a1a; text-align: center; flex-shrink: 0; }
+    .map-container { flex: 1; overflow: hidden; position: relative; touch-action: none; }
+    .map-container img { width: 100%; height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
 
     @media (min-width: 640px) {
-      .stall-list { max-width: 640px; margin: 0 auto; }
-      .filter-bar { max-width: 640px; margin: 0 auto; }
-      .stall-count { max-width: 640px; margin: 0 auto; }
-      .preview-notice { max-width: 640px; margin: 0.75rem auto 0; }
+      .stall-list, .filter-bar, .stall-count, .preview-notice { max-width: 640px; margin-left: auto; margin-right: auto; }
       .register-cta { max-width: 608px; margin: 1rem auto; }
     }
   </style>
@@ -396,16 +89,15 @@
 
 <div class="header">
   <h1>Burnham Market Craft Fair</h1>
-  <p>Stall guide — preview</p>
+  <p>Stall guide</p>
 </div>
 
 <div class="fair-banner">
-  <span>📅</span>
-  <span><strong>Sunday, [date TBC]</strong> &nbsp;·&nbsp; 9am – 5pm &nbsp;·&nbsp; Burnham Market</span>
+  <span>📅 <strong>Sunday, [date TBC]</strong> &nbsp;·&nbsp; 9am – 5pm &nbsp;·&nbsp; Burnham Market</span>
 </div>
 
 <div class="preview-notice">
-  ⚠️ This is a preview of registered stalls. More stalls will appear as stallholders complete their registrations. Details may change before the fair.
+  ⚠️ Preview — more stalls will appear as stallholders register. Details may change before the fair.
 </div>
 
 <a href="index.html" class="register-cta">
@@ -436,7 +128,6 @@
 </div>
 
 <p class="stall-count" id="stallCount"></p>
-
 <div class="stall-list" id="stallList">
   <div class="state-msg"><span class="emoji">⏳</span>Loading stalls…</div>
 </div>
@@ -445,23 +136,31 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <p class="modal-category" id="modalCategory"></p>
+    <span class="modal-category" id="modalCategory"></span>
     <h2 class="modal-title" id="modalTitle"></h2>
     <img class="modal-image" id="modalImage" src="" alt="" style="display:none;" />
     <p class="modal-desc" id="modalDesc"></p>
     <div id="modalPhone" class="modal-detail" style="display:none;">
       <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 012 1.22 2 2 0 014 .04h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
-      <span id="modalPhoneText"></span>
+      <a id="modalPhoneLink" href="#"><span id="modalPhoneText"></span></a>
     </div>
     <div id="modalWebsite" class="modal-detail" style="display:none;">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-      <a id="modalWebsiteLink" href="#" target="_blank" style="color:var(--green);"></a>
+      <a id="modalWebsiteLink" href="#" target="_blank" rel="noopener"></a>
+    </div>
+    <div id="modalInstagram" class="modal-detail" style="display:none;">
+      <svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      <a id="modalInstagramLink" href="#" target="_blank" rel="noopener"></a>
+    </div>
+    <div id="modalFacebook" class="modal-detail" style="display:none;">
+      <svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      <a id="modalFacebookLink" href="#" target="_blank" rel="noopener"></a>
     </div>
     <div class="modal-detail">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       <span>Sunday, [date TBC] &nbsp;·&nbsp; 9am – 5pm</span>
     </div>
-    <div id="modalStallNum" class="modal-detail">
+    <div class="modal-detail" id="modalStallNum">
       <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
       <span id="modalStallNumText"></span>
     </div>
@@ -469,17 +168,32 @@
   </div>
 </div>
 
+<!-- Map overlay -->
+<div class="map-overlay" id="mapOverlay">
+  <div class="map-topbar">
+    <div>
+      <h2>Stall map</h2>
+      <p>Pinch to zoom · drag to pan</p>
+    </div>
+    <button class="map-close" id="mapClose">✕</button>
+  </div>
+  <div class="map-stall-banner" id="mapBanner">Find stall number —</div>
+  <div class="map-container" id="mapContainer">
+    <img id="mapImage" src="images/craft-fair-map.png" alt="Craft fair stall map" draggable="false" />
+  </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script>
   const firebaseConfig = {
-    apiKey:            "YOUR_API_KEY",
+      apiKey: "AIzaSyAmMoJa-5U6Kzkj3ClL8jYB7Y3pL8ysC04",
     authDomain:        "burnhammarketcraftfair.firebaseapp.com",
     databaseURL:       "https://burnhammarketcraftfair-default-rtdb.europe-west1.firebasedatabase.app",
     projectId:         "burnhammarketcraftfair",
     storageBucket:     "burnhammarketcraftfair.firebasestorage.app",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId:             "YOUR_APP_ID"
+     messagingSenderId: "388230915965",
+  appId: "1:388230915965:web:93c83d174322c2aab28e14"
   };
 
   firebase.initializeApp(firebaseConfig);
@@ -487,44 +201,38 @@
 
   let allStalls = [];
   let searchText = '';
-  let categoryFilter = '';
+  let catFilter = '';
 
-  // Load stalls
   db.ref('craft-fair/stalls').on('value', snap => {
     const raw = snap.val();
-    allStalls = raw
-      ? Object.values(raw).sort((a, b) => a.stallNumber - b.stallNumber)
-      : [];
+    allStalls = raw ? Object.values(raw).sort((a,b) => a.stallNumber - b.stallNumber) : [];
     renderStalls();
   });
 
   function renderStalls() {
     const filtered = allStalls.filter(s => {
-      const matchSearch = !searchText ||
-        [s.name, s.description, s.category]
-          .join(' ').toLowerCase().includes(searchText.toLowerCase());
-      const matchCat = !categoryFilter || s.category === categoryFilter;
+      const matchSearch = !searchText || [s.name, s.description, s.category].join(' ').toLowerCase().includes(searchText.toLowerCase());
+      const matchCat = !catFilter || s.category === catFilter;
       return matchSearch && matchCat;
     });
 
-    const count = document.getElementById('stallCount');
-    count.textContent = filtered.length === 0
-      ? ''
-      : `${filtered.length} stall${filtered.length !== 1 ? 's' : ''} registered`;
+    document.getElementById('stallCount').textContent = filtered.length
+      ? `${filtered.length} stall${filtered.length !== 1 ? 's' : ''} registered` : '';
 
     const list = document.getElementById('stallList');
-    if (filtered.length === 0) {
+    if (!filtered.length) {
       list.innerHTML = allStalls.length === 0
         ? '<div class="state-msg"><span class="emoji">🛖</span>No stalls registered yet — check back soon!</div>'
         : '<div class="state-msg"><span class="emoji">🔍</span>No stalls match your search.</div>';
       return;
     }
 
-    list.innerHTML = filtered.map((s, i) => `
-      <div class="stall-card" style="animation-delay:${i * 0.04}s">
+    list.innerHTML = filtered.map((s, i) => {
+      const idx = allStalls.indexOf(s);
+      return `<div class="stall-card" style="animation-delay:${i*0.04}s">
         <div class="stall-main">
           ${s.image
-            ? `<img class="stall-image" src="${esc(s.image)}" alt="${esc(s.name)}" loading="lazy" />`
+            ? `<img class="stall-image" src="${esc(s.image)}" alt="${esc(s.name)}" loading="lazy"/>`
             : `<div class="stall-image-placeholder">🛖</div>`}
           <div class="stall-info">
             <div class="stall-name">${esc(s.name)}</div>
@@ -535,95 +243,113 @@
         </div>
         <div class="stall-actions">
           ${s.phone
-            ? `<a class="action-btn" href="tel:${esc(s.phone)}">
-                <svg class="action-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 012 1.22 2 2 0 014 .04h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
-                <span class="action-label">Call</span>
-              </a>`
-            : `<button class="action-btn disabled">
-                <svg class="action-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 012 1.22 2 2 0 014 .04h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
-                <span class="action-label">Call</span>
-              </button>`}
-          <button class="action-btn" onclick="openModal(${allStalls.indexOf(s)})">
+            ? `<a class="action-btn" href="tel:${esc(s.phone)}"><svg class="action-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 012 1.22 2 2 0 014 .04h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg><span class="action-label">Call</span></a>`
+            : `<button class="action-btn disabled"><svg class="action-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 012 1.22 2 2 0 014 .04h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg><span class="action-label">Call</span></button>`}
+          <button class="action-btn" onclick="openModal(${idx})">
             <svg class="action-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             <span class="action-label">Details</span>
           </button>
           ${s.website
-            ? `<a class="action-btn" href="${esc(s.website)}" target="_blank" rel="noopener">
-                <svg class="action-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-                <span class="action-label">Website</span>
-              </a>`
-            : `<button class="action-btn disabled">
-                <svg class="action-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-                <span class="action-label">Website</span>
-              </button>`}
-          <button class="action-btn" onclick="openModal(${allStalls.indexOf(s)})">
+            ? `<a class="action-btn" href="${esc(s.website)}" target="_blank" rel="noopener"><svg class="action-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg><span class="action-label">Website</span></a>`
+            : `<button class="action-btn disabled"><svg class="action-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg><span class="action-label">Website</span></button>`}
+          ${s.instagram || s.facebook
+            ? `<button class="action-btn" onclick="openModal(${idx}, 'social')">
+                <svg class="action-icon" viewBox="0 0 24 24" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                <span class="action-label">Social</span>
+              </button>`
+            : `<button class="action-btn disabled"><svg class="action-icon" viewBox="0 0 24 24" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><span class="action-label">Social</span></button>`}
+          <button class="action-btn" onclick="openMap(${s.stallNumber})">
             <svg class="action-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span class="action-label">Stall</span>
+            <span class="action-label">Find stall</span>
           </button>
         </div>
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
   }
 
-  // Search and filter
-  document.getElementById('searchInput').addEventListener('input', e => {
-    searchText = e.target.value;
-    renderStalls();
-  });
+  document.getElementById('searchInput').addEventListener('input', e => { searchText = e.target.value; renderStalls(); });
+  document.getElementById('categoryFilter').addEventListener('change', e => { catFilter = e.target.value; renderStalls(); });
 
-  document.getElementById('categoryFilter').addEventListener('change', e => {
-    categoryFilter = e.target.value;
-    renderStalls();
-  });
-
-  // Modal
-  function openModal(index) {
+  // Detail modal
+  function openModal(index, tab) {
     const s = allStalls[index];
     if (!s) return;
-
     document.getElementById('modalTitle').textContent    = s.name;
     document.getElementById('modalCategory').textContent = s.category;
     document.getElementById('modalDesc').textContent     = s.description;
     document.getElementById('modalStallNumText').textContent = `Stall number ${s.stallNumber}`;
-
     const img = document.getElementById('modalImage');
-    if (s.image) { img.src = s.image; img.style.display = 'block'; }
-    else { img.style.display = 'none'; }
-
+    if (s.image) { img.src = s.image; img.style.display = 'block'; } else { img.style.display = 'none'; }
     const phoneWrap = document.getElementById('modalPhone');
-    if (s.phone) {
-      document.getElementById('modalPhoneText').textContent = s.phone;
-      phoneWrap.style.display = 'flex';
-    } else { phoneWrap.style.display = 'none'; }
-
+    if (s.phone) { document.getElementById('modalPhoneText').textContent = s.phone; document.getElementById('modalPhoneLink').href = `tel:${s.phone}`; phoneWrap.style.display = 'flex'; } else { phoneWrap.style.display = 'none'; }
     const webWrap = document.getElementById('modalWebsite');
-    if (s.website) {
-      const link = document.getElementById('modalWebsiteLink');
-      link.href = s.website;
-      link.textContent = s.website.replace(/^https?:\/\//, '');
-      webWrap.style.display = 'flex';
-    } else { webWrap.style.display = 'none'; }
-
+    if (s.website) { const l = document.getElementById('modalWebsiteLink'); l.href = s.website; l.textContent = s.website.replace(/^https?:\/\//, ''); webWrap.style.display = 'flex'; } else { webWrap.style.display = 'none'; }
+    const igWrap = document.getElementById('modalInstagram');
+    if (s.instagram) { const l = document.getElementById('modalInstagramLink'); l.href = `https://instagram.com/${s.instagram}`; l.textContent = `@${s.instagram}`; igWrap.style.display = 'flex'; } else { igWrap.style.display = 'none'; }
+    const fbWrap = document.getElementById('modalFacebook');
+    if (s.facebook) { const l = document.getElementById('modalFacebookLink'); l.href = `https://facebook.com/${s.facebook}`; l.textContent = s.facebook; fbWrap.style.display = 'flex'; } else { fbWrap.style.display = 'none'; }
     document.getElementById('modalOverlay').classList.add('open');
   }
 
-  document.getElementById('modalClose').addEventListener('click', closeModal);
-  document.getElementById('modalOverlay').addEventListener('click', e => {
-    if (e.target === document.getElementById('modalOverlay')) closeModal();
-  });
+  document.getElementById('modalClose').addEventListener('click', () => document.getElementById('modalOverlay').classList.remove('open'));
+  document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === document.getElementById('modalOverlay')) document.getElementById('modalOverlay').classList.remove('open'); });
 
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
+  // Map viewer with pinch-zoom
+  function openMap(stallNumber) {
+    document.getElementById('mapBanner').textContent = `Find stall number ${stallNumber} on the map below`;
+    document.getElementById('mapOverlay').classList.add('open');
+    resetMapTransform();
   }
 
-  function esc(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;');
+  document.getElementById('mapClose').addEventListener('click', () => document.getElementById('mapOverlay').classList.remove('open'));
+
+  // Pinch-zoom and pan
+  let scale = 1, lastScale = 1;
+  let translateX = 0, translateY = 0;
+  let lastTouchDist = 0;
+  let isDragging = false, lastX = 0, lastY = 0;
+
+  function resetMapTransform() { scale = 1; translateX = 0; translateY = 0; applyTransform(); }
+  function applyTransform() {
+    const img = document.getElementById('mapImage');
+    img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    img.style.transformOrigin = 'center center';
   }
+
+  const mapContainer = document.getElementById('mapContainer');
+
+  mapContainer.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) {
+      lastTouchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      lastScale = scale;
+    } else if (e.touches.length === 1) {
+      isDragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  mapContainer.addEventListener('touchmove', e => {
+    if (e.touches.length === 2) {
+      const dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      scale = Math.min(Math.max(lastScale * (dist / lastTouchDist), 1), 5);
+      applyTransform();
+    } else if (e.touches.length === 1 && isDragging) {
+      translateX += e.touches[0].clientX - lastX;
+      translateY += e.touches[0].clientY - lastY;
+      lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+      applyTransform();
+    }
+  }, { passive: true });
+
+  mapContainer.addEventListener('touchend', () => { isDragging = false; });
+
+  // Mouse wheel zoom (desktop)
+  mapContainer.addEventListener('wheel', e => {
+    e.preventDefault();
+    scale = Math.min(Math.max(scale * (e.deltaY < 0 ? 1.1 : 0.9), 1), 5);
+    applyTransform();
+  }, { passive: false });
+
+  function esc(str) { if (!str) return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 </script>
 </body>
 </html>

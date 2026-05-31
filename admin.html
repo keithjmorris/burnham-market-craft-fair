@@ -113,8 +113,6 @@
     <div class="topbar-right">
       <span id="adminEmail"></span>
       <button class="export-btn" id="exportBtn">Export JSON</button>
-<button class="export-btn" id="exportCsvBtn" style="margin-left:0.5rem; background:#4a8c5f;">Export CSV</button>
-<a href="preview.html" target="_blank" class="export-btn" style="margin-left:0.5rem; background:#3a5f51; text-decoration:none;">View Preview</a>
       <button class="signout-btn" id="signoutBtn">Sign out</button>
     </div>
   </div>
@@ -171,6 +169,8 @@
       <div class="modal-field"><label>Contact email (private)</label><input type="email" id="editContactEmail" /></div>
       <div class="modal-field"><label>Phone (public)</label><input type="tel" id="editPhone" /></div>
       <div class="modal-field"><label>Website (public)</label><input type="url" id="editWebsite" /></div>
+      <div class="modal-field"><label>Instagram handle (public)</label><input type="text" id="editInstagram" placeholder="e.g. mystall" /></div>
+      <div class="modal-field"><label>Facebook page (public)</label><input type="text" id="editFacebook" placeholder="e.g. mystallpage" /></div>
     </div>
     <div class="modal-footer">
       <button class="modal-cancel-btn" id="modalCancel">Cancel</button>
@@ -188,9 +188,10 @@
     authDomain:        "burnhammarketcraftfair.firebaseapp.com",
     databaseURL:       "https://burnhammarketcraftfair-default-rtdb.europe-west1.firebasedatabase.app",
     projectId:         "burnhammarketcraftfair",
-    storageBucket: "burnhammarketcraftfair.firebasestorage.app",
+    storageBucket:     "burnhammarketcraftfair.appspot.com",
     messagingSenderId: "388230915965",
   appId: "1:388230915965:web:93c83d174322c2aab28e14"
+};
   };
 
   firebase.initializeApp(firebaseConfig);
@@ -328,6 +329,8 @@
     document.getElementById('editContactEmail').value= stall.contactEmail|| '';
     document.getElementById('editPhone').value       = stall.phone       || '';
     document.getElementById('editWebsite').value     = stall.website     || '';
+    document.getElementById('editInstagram').value   = stall.instagram   || '';
+    document.getElementById('editFacebook').value    = stall.facebook    || '';
     document.getElementById('modalStatus').className = 'modal-status';
     document.getElementById('modalStatus').style.display = 'none';
     document.getElementById('modalSave').disabled    = false;
@@ -360,6 +363,8 @@
         contactEmail: document.getElementById('editContactEmail').value.trim(),
         phone:        document.getElementById('editPhone').value.trim(),
         website:      document.getElementById('editWebsite').value.trim(),
+        instagram:    document.getElementById('editInstagram').value.trim().replace(/^@/, ''),
+        facebook:     document.getElementById('editFacebook').value.trim().replace(/^@/, ''),
         updatedAt:    new Date().toISOString()
       });
       ms.className = 'modal-status success';
@@ -394,36 +399,6 @@
       image:       s.image    || '',
       stallNumber: s.stallNumber
     }));
-    document.getElementById('exportCsvBtn').addEventListener('click', () => {
-  const headers = [
-    'Stall Number', 'Name', 'Category', 'Description',
-    'Contact Name', 'Contact Email', 'Phone', 'Website',
-    'Image URL', 'Submitted At', 'Updated At'
-  ];
-
-  const rows = allStalls.map(s => [
-    s.stallNumber,
-    s.name,
-    s.category,
-    s.description,
-    s.contactName,
-    s.contactEmail,
-    s.phone    || '',
-    s.website  || '',
-    s.image    || '',
-    s.submittedAt  || '',
-    s.updatedAt    || ''
-  ].map(val => `"${String(val).replace(/"/g, '""')}"`).join(','));
-
-  const csv      = [headers.join(','), ...rows].join('\n');
-  const blob     = new Blob([csv], { type: 'text/csv' });
-  const url      = URL.createObjectURL(blob);
-  const a        = document.createElement('a');
-  a.href         = url;
-  a.download     = `stalls-export-${new Date().toISOString().slice(0,10)}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
-});
     exported.sort((a, b) => a.stallNumber - b.stallNumber);
     const blob = new Blob([JSON.stringify(exported, null, 2)], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
