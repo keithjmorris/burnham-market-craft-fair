@@ -84,9 +84,9 @@
       <div class="field">
         <label for="stallNumber">Stall number <span style="color:#c0392b">*</span></label>
         <div class="stall-number-wrap">
-          <input type="number" id="stallNumber" name="stallNumber" min="1" max="999" placeholder="e.g. 12" required />
-          <span class="stall-hint">See your stall allocation letter</span>
-        </div>
+  <input type="text" id="stallNumber" name="stallNumber" placeholder="e.g. 12A" required />
+  <span class="stall-hint">See your stall allocation letter</span>
+</div>
         <p class="field-error" id="stallNumber-err">Please enter your stall number.</p>
       </div>
       <div class="field">
@@ -254,7 +254,7 @@
   function validate() {
     let ok = true;
     const stallNumber = document.getElementById('stallNumber').value.trim();
-    if (!stallNumber || isNaN(stallNumber) || parseInt(stallNumber) < 1) { showErr('stallNumber'); ok = false; } else clearErr('stallNumber');
+if (!stallNumber) { showErr('stallNumber'); ok = false; } else clearErr('stallNumber');
     const stallName = document.getElementById('stallName').value.trim();
     if (!stallName) { showErr('stallName'); ok = false; } else clearErr('stallName');
     const category = document.getElementById('category').value;
@@ -296,7 +296,7 @@
       const editToken = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
 
       const data = {
-        stallNumber:  parseInt(document.getElementById('stallNumber').value.trim()),
+        stallNumber: document.getElementById('stallNumber').value.trim(),
         name:         document.getElementById('stallName').value.trim(),
         category:     document.getElementById('category').value,
         description:  document.getElementById('description').value.trim(),
