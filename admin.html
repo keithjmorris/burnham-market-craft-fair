@@ -357,7 +357,7 @@
 
     try {
       await db.ref(`craft-fair/stalls/${key}`).update({
-        stallNumber:  parseInt(document.getElementById('editStallNumber').value) || 0,
+        stallNumber: document.getElementById('editStallNumber').value.trim(),
         name:         document.getElementById('editStallName').value.trim(),
         category:     document.getElementById('editCategory').value,
         description:  document.getElementById('editDescription').value.trim(),
