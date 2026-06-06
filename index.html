@@ -316,18 +316,14 @@ if (!stallNumber) { showErr('stallNumber'); ok = false; } else clearErr('stallNu
       const key  = ref.key;
       const editLink = `${BASE_URL}/edit.html?id=${key}&token=${editToken}`;
 
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
   contact_name:  data.contactName,
   contact_email: data.contactEmail,
   stall_number:  data.stallNumber,
   stall_name:    data.name,
   category:      data.category,
-  edit_link:     editLink,
-  to_email:      data.contactEmail
-}, {
-  to: data.contactEmail
+  edit_link:     editLink
 });
-
       document.getElementById('stallForm').style.display = 'none';
       const successCard = document.getElementById('successCard');
       document.getElementById('confirmedEmail').textContent = data.contactEmail;
