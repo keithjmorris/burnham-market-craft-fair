@@ -315,14 +315,20 @@
 
   // ── EDIT MODAL ───────────────────────────────────────────────────────
   function openEdit(key) {
-  const entry = allEntries.find(e => e._key === key);
-  if (!entry) return;
-  document.getElementById('editRecordId').value      = key;
-  document.getElementById('editName').value          = entry.name          || '';
-  document.getElementById('editAge').value           = entry.age           || 'Adult';
-  document.getElementById('editFinalSolution').value = entry.finalSolution || '';
-  document.getElementById('editBonusShop').value     = entry.bonusShop     || '';
-  document.getElementById('editBonusReason').value   = entry.bonusReason   || '';
+    const entry = allEntries.find(e => e._key === key);
+    if (!entry) return;
+    document.getElementById('editRecordId').value      = key;
+    document.getElementById('editName').value          = entry.name          || '';
+    document.getElementById('editAge').value           = entry.age           || 'Adult';
+    document.getElementById('editFinalSolution').value = entry.finalSolution || '';
+    document.getElementById('editBonusShop').value     = entry.bonusShop     || '';
+    document.getElementById('editBonusReason').value   = entry.bonusReason   || '';
+    document.getElementById('modalStatus').className   = 'modal-status';
+    document.getElementById('modalStatus').style.display = 'none';
+    document.getElementById('modalSave').disabled      = false;
+    document.getElementById('modalSave').textContent   = 'Save changes';
+    document.getElementById('modalOverlay').classList.add('open');
+  }
 
   document.getElementById('modalClose').addEventListener('click', closeModal);
   document.getElementById('modalCancel').addEventListener('click', closeModal);
@@ -341,13 +347,13 @@
 
     try {
       await db.ref(`rogue-traders/entries/${key}`).update({
-  name:          document.getElementById('editName').value.trim(),
-  age:           document.getElementById('editAge').value,
-  finalSolution: document.getElementById('editFinalSolution').value.trim(),
-  bonusShop:     document.getElementById('editBonusShop').value.trim(),
-  bonusReason:   document.getElementById('editBonusReason').value.trim(),
-  updatedAt:     new Date().toISOString()
-});
+        name:          document.getElementById('editName').value.trim(),
+        age:           document.getElementById('editAge').value,
+        finalSolution: document.getElementById('editFinalSolution').value.trim(),
+        bonusShop:     document.getElementById('editBonusShop').value.trim(),
+        bonusReason:   document.getElementById('editBonusReason').value.trim(),
+        updatedAt:     new Date().toISOString()
+      });
       ms.className = 'modal-status success';
       ms.textContent = '✓ Saved successfully.';
       ms.style.display = 'block';
@@ -376,12 +382,12 @@
 
   document.getElementById('exportCsvBtn').addEventListener('click', () => {
     const headers = ['Name', 'Age', 'Number of Sightings', 'Final Solution', 'Favourite Shop', 'Why Favourite', 'Submitted At'];
-const rows = allEntries.map(e => [
-  e.name, e.age || '',
-  e.sightings ? Object.keys(e.sightings).length : 0,
-  e.finalSolution || '', e.bonusShop || '', e.bonusReason || '',
-  e.submittedAt || ''
-].map(val => `"${String(val).replace(/"/g, '""')}"`).join(','));
+    const rows = allEntries.map(e => [
+      e.name, e.age || '',
+      e.sightings ? Object.keys(e.sightings).length : 0,
+      e.finalSolution || '', e.bonusShop || '', e.bonusReason || '',
+      e.submittedAt || ''
+    ].map(val => `"${String(val).replace(/"/g, '""')}"`).join(','));
     const csv  = [headers.join(','), ...rows].join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
     const url  = URL.createObjectURL(blob);
