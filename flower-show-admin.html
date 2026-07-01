@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flower Show Admin</title>
+  <title>Rogue Traders Admin</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f4f0; color: #1a1a1a; min-height: 100vh; }
@@ -90,7 +90,7 @@
 <!-- Login screen -->
 <div class="login-wrap" id="loginWrap">
   <div class="login-card">
-    <h1>Flower Show Admin</h1>
+    <h1>Rogue Traders Admin</h1>
     <p>Sign in to manage entries</p>
     <div class="login-field">
       <label for="loginEmail">Email</label>
@@ -108,7 +108,7 @@
 <!-- Admin dashboard -->
 <div class="admin-wrap" id="adminWrap">
   <div class="topbar">
-    <h1>Burnham Flower Show & Carnival — Entries</h1>
+    <h1>Rogue Traders — Cipher Hunt Entries</h1>
     <div class="topbar-right">
       <span id="adminEmail"></span>
       <button class="export-btn" id="exportCsvBtn" style="background:#4a8c5f;">Export CSV</button>
@@ -118,24 +118,21 @@
   </div>
 
   <div class="content">
-    <div class="stats">
-      <div class="stat-card"><div class="stat-label">Total entries</div><div class="stat-value" id="statTotal">—</div></div>
-      <div class="stat-card"><div class="stat-label">General</div><div class="stat-value" id="statGeneral">—</div></div>
-      <div class="stat-card"><div class="stat-label">Photography</div><div class="stat-value" id="statPhotography">—</div></div>
-      <div class="stat-card"><div class="stat-label">Children's</div><div class="stat-value" id="statChildren">—</div></div>
-      <div class="stat-card"><div class="stat-label">Total fees</div><div class="stat-value" id="statFees">—</div></div>
-    </div>
+    <div class="stat-card"><div class="stat-label">Total entries</div><div class="stat-value" id="statTotal">—</div></div>
+<div class="stat-card"><div class="stat-label">Adults</div><div class="stat-value" id="statAdults">—</div></div>
+<div class="stat-card"><div class="stat-label">Children</div><div class="stat-value" id="statChildren">—</div></div>
+<div class="stat-card"><div class="stat-label">With solution</div><div class="stat-value" id="statSolutions">—</div>
+</div>
 
     <div class="table-wrap">
       <div class="table-header">
         <h2>Entries</h2>
         <div class="table-header-controls">
           <select class="sort-select" id="sectionFilter">
-            <option value="">All sections</option>
-            <option value="General">General</option>
-            <option value="Photography">Photography</option>
-            <option value="Children">Children's</option>
-          </select>
+  <option value="">All entries</option>
+  <option value="Adult">Adults only</option>
+  <option value="Child">Children only</option>
+</select>
           <input type="text" class="filter-input" id="filterInput" placeholder="Search entries…" />
         </div>
       </div>
@@ -152,24 +149,20 @@
       <button class="modal-close" id="modalClose">×</button>
     </div>
     <div class="modal-body">
-      <div class="modal-status" id="modalStatus"></div>
-      <input type="hidden" id="editRecordId" />
-      <div class="modal-field">
-        <label>Section</label>
-        <select id="editSection">
-          <option value="General (Adult Classes 1–92)">General (Adult Classes 1–92)</option>
-          <option value="Photography (Classes 56–59)">Photography (Classes 56–59)</option>
-          <option value="Children's (Classes 93–119)">Children's (Classes 93–119)</option>
-        </select>
-      </div>
-      <div class="modal-field"><label>Name</label><input type="text" id="editName" /></div>
-      <div class="modal-field"><label>Address</label><input type="text" id="editAddress" /></div>
-      <div class="modal-field"><label>Telephone</label><input type="tel" id="editTelephone" /></div>
-      <div class="modal-field"><label>Classes entered</label><input type="text" id="editClasses" placeholder="e.g. 3, 7, 12" /></div>
-      <div class="modal-field"><label>Age (if under 16)</label><input type="text" id="editAge" /></div>
-      <div class="modal-field"><label>Notes</label><textarea id="editNotes"></textarea></div>
-      <div class="modal-field"><label>Total fee</label><input type="text" id="editTotalFee" /></div>
-    </div>
+  <div class="modal-status" id="modalStatus"></div>
+  <input type="hidden" id="editRecordId" />
+  <div class="modal-field"><label>Name</label><input type="text" id="editName" /></div>
+  <div class="modal-field">
+    <label>Age</label>
+    <select id="editAge">
+      <option value="Adult">Adult</option>
+      <option value="Child">Child</option>
+    </select>
+  </div>
+  <div class="modal-field"><label>Final Solution</label><input type="text" id="editFinalSolution" /></div>
+  <div class="modal-field"><label>Favourite Shop</label><input type="text" id="editBonusShop" /></div>
+  <div class="modal-field"><label>What made it their favourite</label><textarea id="editBonusReason"></textarea></div>
+</div>
     <div class="modal-footer">
       <button class="modal-cancel-btn" id="modalCancel">Cancel</button>
       <button class="modal-save-btn" id="modalSave">Save changes</button>
@@ -235,7 +228,7 @@
 
   // ── LOAD ENTRIES ────────────────────────────────────────────────────
   function loadEntries() {
-    db.ref('flower-show/entries').on('value', snap => {
+    db.ref('rogue-traders/entries').on('value', snap => {
       const raw = snap.val();
       allEntries = raw ? Object.entries(raw).map(([key, val]) => ({ _key: key, ...val })) : [];
       allEntries.sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
@@ -245,24 +238,18 @@
   }
 
   function updateStats() {
-    document.getElementById('statTotal').textContent       = allEntries.length;
-    document.getElementById('statGeneral').textContent     = allEntries.filter(e => (e.section||'').startsWith('General')).length;
-    document.getElementById('statPhotography').textContent = allEntries.filter(e => (e.section||'').startsWith('Photography')).length;
-    document.getElementById('statChildren').textContent    = allEntries.filter(e => (e.section||'').startsWith("Children")).length;
-
-    const totalPence = allEntries.reduce((sum, e) => {
-      const val = parseFloat((e.totalFee || '£0').replace('£',''));
-      return sum + (isNaN(val) ? 0 : val * 100);
-    }, 0);
-    document.getElementById('statFees').textContent = `£${(totalPence/100).toFixed(2)}`;
-  }
+  document.getElementById('statTotal').textContent     = allEntries.length;
+  document.getElementById('statAdults').textContent    = allEntries.filter(e => e.age === 'Adult').length;
+  document.getElementById('statChildren').textContent  = allEntries.filter(e => e.age === 'Child').length;
+  document.getElementById('statSolutions').textContent = allEntries.filter(e => e.finalSolution && e.finalSolution.trim()).length;
+}
 
   function renderTable() {
     let filtered = allEntries;
 
     if (sectionFilter) {
-      filtered = filtered.filter(e => (e.section||'').startsWith(sectionFilter));
-    }
+  filtered = filtered.filter(e => e.age === sectionFilter);
+}
     if (filterText) {
       filtered = filtered.filter(e => [e.name, e.address, e.telephone, e.classes, e.notes]
         .join(' ').toLowerCase().includes(filterText.toLowerCase()));
@@ -275,29 +262,27 @@
     }
 
     let html = `<div style="overflow-x:auto;"><table>
-      <thead><tr>
-        <th>Section</th><th>Name</th><th>Address</th><th>Telephone</th>
-        <th>Classes</th><th>Age</th><th>Fee</th><th>Submitted</th><th>Actions</th>
-      </tr></thead><tbody>`;
+  <thead><tr>
+    <th>Name</th><th>Age</th><th>Sightings</th><th>Final Solution</th>
+    <th>Favourite Shop</th><th>Submitted</th><th>Actions</th>
+  </tr></thead><tbody>`;
 
     filtered.forEach(e => {
-      const date = e.submittedAt ? new Date(e.submittedAt).toLocaleString('en-GB') : '—';
-      const sectionShort = (e.section || '').split(' (')[0];
-      html += `<tr>
-        <td><span class="tag">${esc(sectionShort)}</span></td>
-        <td>${esc(e.name)}</td>
-        <td style="max-width:160px;">${esc(e.address)}</td>
-        <td>${esc(e.telephone)}</td>
-        <td>${esc(e.classes)}</td>
-        <td>${esc(e.age) || '<span style="color:#bbb">—</span>'}</td>
-        <td>${esc(e.totalFee)}</td>
-        <td style="white-space:nowrap;font-size:0.78rem;">${date}</td>
-        <td style="white-space:nowrap;">
-          <button class="action-btn edit-btn" onclick="openEdit('${e._key}')">Edit</button>
-          <button class="action-btn delete-btn" onclick="deleteEntry('${e._key}', '${esc(e.name)}')">Delete</button>
-        </td>
-      </tr>`;
-    });
+  const date = e.submittedAt ? new Date(e.submittedAt).toLocaleString('en-GB') : '—';
+  const sightingCount = e.sightings ? Object.keys(e.sightings).length : 0;
+  html += `<tr>
+    <td>${esc(e.name)}</td>
+    <td><span class="tag">${esc(e.age)}</span></td>
+    <td style="text-align:center;">${sightingCount}</td>
+    <td><strong>${esc(e.finalSolution) || '<span style="color:#bbb">—</span>'}</strong></td>
+    <td>${esc(e.bonusShop) || '<span style="color:#bbb">—</span>'}</td>
+    <td style="white-space:nowrap;font-size:0.78rem;">${date}</td>
+    <td style="white-space:nowrap;">
+      <button class="action-btn edit-btn" onclick="openEdit('${e._key}')">Edit</button>
+      <button class="action-btn delete-btn" onclick="deleteEntry('${e._key}', '${esc(e.name)}')">Delete</button>
+    </td>
+  </tr>`;
+});
 
     html += '</tbody></table></div>';
     container.innerHTML = html;
@@ -322,7 +307,7 @@
   async function deleteEntry(key, name) {
     if (!confirm(`Delete entry for "${name}"? This cannot be undone.`)) return;
     try {
-      await db.ref(`flower-show/entries/${key}`).remove();
+      await db.ref(`rogue-traders/entries/${key}`).remove();
     } catch (err) {
       alert('Delete failed — please try again.');
     }
@@ -330,23 +315,14 @@
 
   // ── EDIT MODAL ───────────────────────────────────────────────────────
   function openEdit(key) {
-    const entry = allEntries.find(e => e._key === key);
-    if (!entry) return;
-    document.getElementById('editRecordId').value = key;
-    document.getElementById('editSection').value   = entry.section     || '';
-    document.getElementById('editName').value      = entry.name        || '';
-    document.getElementById('editAddress').value   = entry.address     || '';
-    document.getElementById('editTelephone').value = entry.telephone   || '';
-    document.getElementById('editClasses').value   = entry.classes     || '';
-    document.getElementById('editAge').value       = entry.age         || '';
-    document.getElementById('editNotes').value     = entry.notes       || '';
-    document.getElementById('editTotalFee').value  = entry.totalFee    || '';
-    document.getElementById('modalStatus').className = 'modal-status';
-    document.getElementById('modalStatus').style.display = 'none';
-    document.getElementById('modalSave').disabled    = false;
-    document.getElementById('modalSave').textContent = 'Save changes';
-    document.getElementById('modalOverlay').classList.add('open');
-  }
+  const entry = allEntries.find(e => e._key === key);
+  if (!entry) return;
+  document.getElementById('editRecordId').value      = key;
+  document.getElementById('editName').value          = entry.name          || '';
+  document.getElementById('editAge').value           = entry.age           || 'Adult';
+  document.getElementById('editFinalSolution').value = entry.finalSolution || '';
+  document.getElementById('editBonusShop').value     = entry.bonusShop     || '';
+  document.getElementById('editBonusReason').value   = entry.bonusReason   || '';
 
   document.getElementById('modalClose').addEventListener('click', closeModal);
   document.getElementById('modalCancel').addEventListener('click', closeModal);
@@ -364,17 +340,14 @@
     ms.style.display = 'none';
 
     try {
-      await db.ref(`flower-show/entries/${key}`).update({
-        section:    document.getElementById('editSection').value,
-        name:       document.getElementById('editName').value.trim(),
-        address:    document.getElementById('editAddress').value.trim(),
-        telephone:  document.getElementById('editTelephone').value.trim(),
-        classes:    document.getElementById('editClasses').value.trim(),
-        age:        document.getElementById('editAge').value.trim(),
-        notes:      document.getElementById('editNotes').value.trim(),
-        totalFee:   document.getElementById('editTotalFee').value.trim(),
-        updatedAt:  new Date().toISOString()
-      });
+      await db.ref(`rogue-traders/entries/${key}`).update({
+  name:          document.getElementById('editName').value.trim(),
+  age:           document.getElementById('editAge').value,
+  finalSolution: document.getElementById('editFinalSolution').value.trim(),
+  bonusShop:     document.getElementById('editBonusShop').value.trim(),
+  bonusReason:   document.getElementById('editBonusReason').value.trim(),
+  updatedAt:     new Date().toISOString()
+});
       ms.className = 'modal-status success';
       ms.textContent = '✓ Saved successfully.';
       ms.style.display = 'block';
@@ -396,22 +369,24 @@
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href     = url;
-    a.download = `flower-show-entries-${new Date().toISOString().slice(0,10)}.json`;
+    a.download = `rogue-traders-entries-${new Date().toISOString().slice(0,10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
   });
 
   document.getElementById('exportCsvBtn').addEventListener('click', () => {
-    const headers = ['Section', 'Name', 'Address', 'Telephone', 'Classes', 'Number of Classes', 'Age', 'Total Fee', 'Notes', 'Submitted At'];
-    const rows = allEntries.map(e => [
-      e.section, e.name, e.address, e.telephone, e.classes,
-      e.numberOfClasses || '', e.age || '', e.totalFee || '', e.notes || '', e.submittedAt || ''
-    ].map(val => `"${String(val).replace(/"/g, '""')}"`).join(','));
+    const headers = ['Name', 'Age', 'Number of Sightings', 'Final Solution', 'Favourite Shop', 'Why Favourite', 'Submitted At'];
+const rows = allEntries.map(e => [
+  e.name, e.age || '',
+  e.sightings ? Object.keys(e.sightings).length : 0,
+  e.finalSolution || '', e.bonusShop || '', e.bonusReason || '',
+  e.submittedAt || ''
+].map(val => `"${String(val).replace(/"/g, '""')}"`).join(','));
     const csv  = [headers.join(','), ...rows].join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
-    a.href = url; a.download = `flower-show-entries-${new Date().toISOString().slice(0,10)}.csv`;
+    a.href = url; a.download = `rogue-traders-entries-${new Date().toISOString().slice(0,10)}.csv`;
     a.click(); URL.revokeObjectURL(url);
   });
 </script>
